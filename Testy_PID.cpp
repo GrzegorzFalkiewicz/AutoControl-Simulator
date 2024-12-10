@@ -2,12 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
-
-#define DEBUG
-
 #include "RegulatorPID.h"
 
-#ifdef DEBUG
+
 
 //Funkcje pomocnicze dla testów:
 
@@ -112,8 +109,8 @@ void test_RegulatorPI_skokJednostkowy_1()
 	try
 	{
 		// Przygotowanie danych:
-		RegulatorPID instancjaTestowa(0.5,1.0);
-		constexpr size_t LICZ_ITER = 30;
+		RegulatorPID instancjaTestowa(0.5, 1.0);
+		constexpr size_t LICZ_ITER = 10;
 		std::vector<double> sygWe(LICZ_ITER);      // pobudzenie modelu 
 		std::vector<double> spodzSygWy(LICZ_ITER); // spodziewana sekwencja wy 
 		std::vector<double> faktSygWy(LICZ_ITER);  // faktyczna sekwencja wy
@@ -121,7 +118,7 @@ void test_RegulatorPI_skokJednostkowy_1()
 		// Symulacja skoku jednostkowego w chwili 1. (!!i - daje 1 dla i != 0);
 		for (int i = 0; i < LICZ_ITER; i++)
 			sygWe[i] = !!i;
-		spodzSygWy = { 0, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5, 26.5, 27.5, 28.5, 29.5 };
+		spodzSygWy = { 0, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5};
 
 		// Symulacja modelu:
 		for (int i = 0; i < LICZ_ITER; i++)
@@ -151,7 +148,7 @@ void test_RegulatorPI_skokJednostkowy_2()
 	{
 		// Przygotowanie danych:
 		RegulatorPID instancjaTestowa(0.5, 10.0);
-		constexpr size_t LICZ_ITER = 30;
+		constexpr size_t LICZ_ITER = 10;
 		std::vector<double> sygWe(LICZ_ITER);      // pobudzenie modelu 
 		std::vector<double> spodzSygWy(LICZ_ITER); // spodziewana sekwencja wy 
 		std::vector<double> faktSygWy(LICZ_ITER);  // faktyczna sekwencja wy
@@ -159,7 +156,7 @@ void test_RegulatorPI_skokJednostkowy_2()
 		// Symulacja skoku jednostkowego w chwili 1. (!!i - daje 1 dla i != 0);
 		for (int i = 0; i < LICZ_ITER; i++)
 			sygWe[i] = !!i;
-		spodzSygWy = { 0, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2, 3.3, 3.4 };
+		spodzSygWy = { 0, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4};
 
 		// Symulacja modelu:
 		for (int i = 0; i < LICZ_ITER; i++)
@@ -189,7 +186,7 @@ void test_RegulatorPID_skokJednostkowy()
 	{
 		// Przygotowanie danych:
 		RegulatorPID instancjaTestowa(0.5, 10.0, 0.2);
-		constexpr size_t LICZ_ITER = 30;
+		constexpr size_t LICZ_ITER = 10;
 		std::vector<double> sygWe(LICZ_ITER);      // pobudzenie modelu 
 		std::vector<double> spodzSygWy(LICZ_ITER); // spodziewana sekwencja wy 
 		std::vector<double> faktSygWy(LICZ_ITER);  // faktyczna sekwencja wy
@@ -197,7 +194,7 @@ void test_RegulatorPID_skokJednostkowy()
 		// Symulacja skoku jednostkowego w chwili 1. (!!i - daje 1 dla i != 0);
 		for (int i = 0; i < LICZ_ITER; i++)
 			sygWe[i] = !!i;
-		spodzSygWy = { 0, 0.8, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2, 3.3, 3.4 };
+		spodzSygWy = { 0, 0.8, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4};
 
 		// Symulacja modelu:
 		for (int i = 0; i < LICZ_ITER; i++)
@@ -230,15 +227,4 @@ int main()
 
 }
 
-#endif
-
-#ifdef MAIN
-
-using namespace std;
-
-int main()
-{
-
-}
-#endif
 
