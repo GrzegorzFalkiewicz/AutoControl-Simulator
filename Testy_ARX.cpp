@@ -39,7 +39,7 @@ void test_ModelARX_brakPobudzenia()
 	try
 	{
 		// Przygotowanie danych:
-		ModelARX instancjaTestowa({ -0.4 }, { 0.6 }, 1, 0);
+		ModelARX instancjaTestowa({ -0.4 }, { 0.6 }, 1,0);
 		constexpr size_t LICZ_ITER = 30;
 		std::vector<double> sygWe(LICZ_ITER);      // pobudzenie modelu (tu same 0)
 		std::vector<double> spodzSygWy(LICZ_ITER); // spodziewana sekwencja wy (tu same 0)
@@ -72,7 +72,7 @@ void test_ModelARX_skokJednostkowy_1()
 	try
 	{
 		// Przygotowanie danych:
-		ModelARX instancjaTestowa({ -0.4 }, { 0.6 }, 1, 0);
+		ModelARX instancjaTestowa({ -0.4 }, { 0.6 }, 1,0);
 		constexpr size_t LICZ_ITER = 30;
 		std::vector<double> sygWe(LICZ_ITER);      // pobudzenie modelu 
 		std::vector<double> spodzSygWy(LICZ_ITER); // spodziewana sekwencja wy 
