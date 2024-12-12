@@ -1,21 +1,27 @@
-#pragma once
+ï»¿#pragma once
 #include <cmath>
+
+enum TypSygnalu { 
+    SKOK, 
+    SINUS, 
+    PROSTOKAT 
+};
 
 class Generator {
 private:
     double amplituda;
     double okres;
     double czas;
-    double wypelnienie; // dla sygna³u prostok¹tnego
-
+    double wypelnienie; // dla sygnaï¿½u prostokï¿½tnego
+   
 public:
-    enum TypSygna³u { SKOK, SINUS, PROSTOKAT };
+    
 
     Generator(double amplituda = 1.0, double okres = 1.0, double wypelnienie = 0.5);
-    double generuj(TypSygna³u typ, double czas);
+    double Generuj(TypSygnalu typ, double czas);
 
     // Ustawienia generatora
-    void ustawAmplitude(double amp);
-    void ustawOkres(double okr);
-    void ustawWypelnienie(double wyp);
+    void setAmplituda(double amp);
+    void setOkres(double okr);
+    void setWypelnienie(double wyp);
 };
