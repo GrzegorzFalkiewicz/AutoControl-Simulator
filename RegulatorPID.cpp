@@ -1,37 +1,35 @@
 #include "RegulatorPID.h"
 #include <iostream>
 
-RegulatorPID::RegulatorPID(double kp, double ti, double td)
-    : kp(kp), ti(ti), td(td), akumulator(0.0), poprzedniBladaWart(0.0) {}
+RegulatorPID::RegulatorPID(double k, double ti, double td)
+    : k(k), ti(ti), td(td), suma_uchybu(0.0), poprzedniBladaWart(0.0), ostatniCzas(0.0) {}
 
-double RegulatorPID::symuluj(double wejscie) {
-    double blad = wejscie;
-    double roznicaCzasu = 1.0; // 1Hz
+double RegulatorPID::symuluj(double blad, double czas) {
+    double roznicaCzasu = 0.0;
+    if (czas != ostatniCzas)
+    {
+        double roznicaCzasu = (czas - ostatniCzas);
+    }
+    else {
+        roznicaCzasu = 1.0; //1.0 jesli czas sie nie zmienia
+    };
+    ostatniCzas = czas;
 
-    // Człon proporcjonalny
-    double wyj_p = kp * blad;
+    // Czlon proporcjonalny
+    double wyj_p = k * blad;
 
-    // Człon calkujący
+    // Cz�on calkujacy
     double wyj_i = 0.0;
     if (ti != 0.0) {
-        akumulator += blad * roznicaCzasu; //akumulacja bledu
-        wyj_i = akumulator * (kp / ti);
+        suma_uchybu += blad;
+        wyj_i = suma_uchybu/ti;
     }
 
-    // Człon rozniczkujący
+    // Cz�on rozniczkujacy
     double wyj_d = 0.0;
-        wyj_d = kp * td * (blad - poprzedniBladaWart) / roznicaCzasu;
-        poprzedniBladaWart = blad;
+    wyj_d = td * (blad - poprzedniBladaWart);
+    poprzedniBladaWart = blad;
 
-    // Wynik sumaryczny
     double wyj = wyj_p + wyj_i + wyj_d;
-
-    // Wartosci do debugowania
-    std::cout << std::endl << "blad: " << blad
-        << ", wyj_p: " << wyj_p
-        << ", wyj_i: " << wyj_i
-        << ", wyj_d: " << wyj_d
-        << ", wyj: " << wyj << std::endl;
-
     return wyj;
 }
