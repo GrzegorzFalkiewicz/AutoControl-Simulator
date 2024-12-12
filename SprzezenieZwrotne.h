@@ -1,15 +1,21 @@
 #pragma once
+#include "ModelARX.h"
 #include "RegulatorPID.h"
+#include "Generator.h"
 
 class SprzezenieZwrotne {
 private:
+    ModelARX* model;
     RegulatorPID* regulator;
-    double wartoscZadana;
-    double wartoscMierzona;
+    Generator* WartoscZadana; 
 
 public:
-    SprzezenieZwrotne(RegulatorPID* regulator, double wartoscZadana);
-    void ustawWartoscZadana(double wartosc);
-    double pobierzWartoscZadana() const;
-    double symuluj(double nowaWartoscMierzona, double czas);
+    // Konstruktor
+    SprzezenieZwrotne(ModelARX* model, RegulatorPID* regulator, Generator* wartoscZadana);
+
+    // Metoda symulacji jednego kroku uk³adu
+    double symuluj(double czas);
+
+    // Ustawienie nowej wartosci zadanej
+    void setWartoscZadana(Generator* nowaWartoscZadana);
 };
