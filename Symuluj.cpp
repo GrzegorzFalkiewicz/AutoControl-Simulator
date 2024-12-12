@@ -1,5 +1,4 @@
 #include "Symuluj.h"
-#include <fstream>
 #include <iostream>
 
 Symuluj::Symuluj() : uklad(nullptr), krokCzasu(0.1), iteracje(100) {}
@@ -25,7 +24,7 @@ void Symuluj::ustawParametrySymulacji(double krokCzasu, int iteracje) {
 
 void Symuluj::uruchom() {
     if (!uklad) {
-        throw std::runtime_error("Układ regulacji nie został skonfigurowany.");
+        throw std::runtime_error("Uk�ad regulacji nie zosta� skonfigurowany.");
     }
 
     daneWyjsciowe.clear();
@@ -37,17 +36,4 @@ void Symuluj::uruchom() {
 
 const std::vector<double>& Symuluj::pobierzDaneWyjsciowe() const {
     return daneWyjsciowe;
-}
-
-void Symuluj::zapiszDoPliku(const std::string& nazwaPliku) const {
-    std::ofstream plik(nazwaPliku);
-    if (!plik.is_open()) {
-        throw std::runtime_error("Nie można otworzyć pliku do zapisu.");
-    }
-
-    for (size_t i = 0; i < daneWyjsciowe.size(); ++i) {
-        plik << i * krokCzasu << ", " << daneWyjsciowe[i] << "\n";
-    }
-
-    plik.close();
 }

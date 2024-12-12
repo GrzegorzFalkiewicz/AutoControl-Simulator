@@ -1,12 +1,11 @@
 #pragma once
 #include "UkladRegulacji.h"
 #include <vector>
-#include <string>
 
 class Symuluj {
 private:
     UkladRegulacji* uklad;
-    std::vector<double> daneWyjsciowe; // Przechowuje dane wyjściowe symulacji
+    std::vector<double> daneWyjsciowe; // Przechowuje dane wyj�ciowe symulacji
     double krokCzasu;
     int iteracje;
 
@@ -20,8 +19,4 @@ public:
 
     // Uruchamianie symulacji
     void uruchom();
-
-    // Pobieranie wyników
-    const std::vector<double>& pobierzDaneWyjsciowe() const;
-    void zapiszDoPliku(const std::string& nazwaPliku) const;
 };
