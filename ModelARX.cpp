@@ -1,12 +1,15 @@
 #include "ModelARX.h"
 
 ModelARX::ModelARX(std::vector<double> wspA, std::vector<double> wspB, int opoznienie)
-    : opoznienie(opoznienie), wspolczynnikA(wspA), wspolczynnikB(wspB) {
+    : opoznienie(opoznienie), wspolczynnikA(wspA), wspolczynnikB(wspB), zaklocenie(0.0, 0.05) {
     bufforWyj = std::deque<double>(wspA.size() + opoznienie, 0.0);
     bufforWej = std::deque<double>(wspB.size() + opoznienie, 0.0);
 }
 
 double ModelARX::symuluj(double wejscie) {
+    double losoweZaklocenie = zaklocenie(generator);
+    wejscie += losoweZaklocenie;
+
     bufforWej.push_front(wejscie);
     bufforWej.pop_back();
 
