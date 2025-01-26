@@ -93,7 +93,6 @@ public:
         startButton = new QPushButton(centralwidget);
         startButton->setObjectName("startButton");
         startButton->setMinimumSize(QSize(0, 100));
-        startButton->setMaximumSize(QSize(16777215, 300));
         startButton->setAutoFillBackground(true);
 
         horizontalLayout->addWidget(startButton);
@@ -101,7 +100,6 @@ public:
         stopButton = new QPushButton(centralwidget);
         stopButton->setObjectName("stopButton");
         stopButton->setMinimumSize(QSize(0, 100));
-        stopButton->setMaximumSize(QSize(16777215, 300));
         stopButton->setAutoFillBackground(true);
 
         horizontalLayout->addWidget(stopButton);
@@ -109,7 +107,6 @@ public:
         resetButton = new QPushButton(centralwidget);
         resetButton->setObjectName("resetButton");
         resetButton->setMinimumSize(QSize(0, 100));
-        resetButton->setMaximumSize(QSize(16777215, 300));
         resetButton->setAutoFillBackground(true);
 
         horizontalLayout->addWidget(resetButton);
@@ -160,7 +157,6 @@ public:
         sizePolicy.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
         label_8->setSizePolicy(sizePolicy);
         label_8->setMinimumSize(QSize(134, 123));
-        label_8->setMaximumSize(QSize(16777215, 300));
         label_8->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         label_8->setAutoFillBackground(true);
         label_8->setLineWidth(2);
@@ -171,7 +167,6 @@ public:
         label_9 = new QLabel(centralwidget);
         label_9->setObjectName("label_9");
         label_9->setMinimumSize(QSize(135, 123));
-        label_9->setMaximumSize(QSize(16777215, 300));
         label_9->setAutoFillBackground(true);
         label_9->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -180,7 +175,6 @@ public:
         label_10 = new QLabel(centralwidget);
         label_10->setObjectName("label_10");
         label_10->setMinimumSize(QSize(134, 123));
-        label_10->setMaximumSize(QSize(16777215, 300));
         label_10->setAutoFillBackground(true);
         label_10->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -193,7 +187,6 @@ public:
         gridLayout_2->setObjectName("gridLayout_2");
         label_5 = new QLabel(centralwidget);
         label_5->setObjectName("label_5");
-        label_5->setMaximumSize(QSize(16777215, 300));
         label_5->setAutoFillBackground(true);
         label_5->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -243,7 +236,6 @@ public:
         sizePolicy1.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
         label_7->setSizePolicy(sizePolicy1);
         label_7->setMinimumSize(QSize(0, 50));
-        label_7->setMaximumSize(QSize(16777215, 300));
         label_7->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         label_7->setAutoFillBackground(true);
         label_7->setFrameShape(QFrame::Shape::NoFrame);
@@ -275,7 +267,6 @@ public:
         gridLayout_4->setObjectName("gridLayout_4");
         label = new QLabel(centralwidget);
         label->setObjectName("label");
-        label->setMaximumSize(QSize(16777215, 300));
         label->setAutoFillBackground(true);
         label->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -283,7 +274,6 @@ public:
 
         label_11 = new QLabel(centralwidget);
         label_11->setObjectName("label_11");
-        label_11->setMaximumSize(QSize(16777215, 300));
         label_11->setAutoFillBackground(true);
         label_11->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -304,7 +294,6 @@ public:
 
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName("label_2");
-        label_2->setMaximumSize(QSize(16777215, 300));
         label_2->setAutoFillBackground(true);
         label_2->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -330,7 +319,6 @@ public:
 
         label_3 = new QLabel(centralwidget);
         label_3->setObjectName("label_3");
-        label_3->setMaximumSize(QSize(16777215, 300));
         label_3->setAutoFillBackground(true);
         label_3->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -338,7 +326,6 @@ public:
 
         label_12 = new QLabel(centralwidget);
         label_12->setObjectName("label_12");
-        label_12->setMaximumSize(QSize(16777215, 300));
         label_12->setAutoFillBackground(true);
         label_12->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -355,7 +342,6 @@ public:
 
         label_4 = new QLabel(centralwidget);
         label_4->setObjectName("label_4");
-        label_4->setMaximumSize(QSize(16777215, 300));
         label_4->setAutoFillBackground(true);
         label_4->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -379,7 +365,6 @@ public:
 
         label_13 = new QLabel(centralwidget);
         label_13->setObjectName("label_13");
-        label_13->setMaximumSize(QSize(16777215, 300));
         label_13->setAutoFillBackground(true);
         label_13->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
