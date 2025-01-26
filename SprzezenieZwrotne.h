@@ -9,7 +9,6 @@ private:
     ModelARX* model;
     RegulatorPID* regulator;
     Generator* generator;
-
 public:
     SprzezenieZwrotne(ModelARX* model, RegulatorPID* regulator, Generator* generator);
     double symuluj(int krok);

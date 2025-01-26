@@ -11,8 +11,8 @@ private:
     std::vector<double> wspolczynnikB;
     std::deque<double> bufforWyj;
     std::deque<double> bufforWej;
-    std::default_random_engine generator;  // Generator losowy
-    std::normal_distribution<double> zaklocenie;  // Zakłócenie
+    std::default_random_engine generator;
+    std::normal_distribution<double> zaklocenie;
 
 public:
     ModelARX(std::vector<double> wspA, std::vector<double> wspB, int opoznienie = 0);

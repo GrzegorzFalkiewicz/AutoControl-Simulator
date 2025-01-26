@@ -6,8 +6,8 @@ SprzezenieZwrotne::SprzezenieZwrotne(ModelARX* model, RegulatorPID* regulator, G
 
 double SprzezenieZwrotne::symuluj(int krok) {
     double wartoscZadana = generator->generuj(krok);
-    double wartoscModelu = model->symuluj(0);  // Model powinien startować od zera
+    double wartoscModelu = model->symuluj(0);
     double uchyb = wartoscZadana - wartoscModelu;
     double sterowanie = regulator->symuluj(uchyb);
-    return model->symuluj(sterowanie);  // Sterowanie tylko raz trafia do modelu
+    return model->symuluj(sterowanie);
 }

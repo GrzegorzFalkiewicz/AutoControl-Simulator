@@ -35,22 +35,27 @@ private:
     Ui::MainWindow *ui;
     UkladRegulacji *uklad;
     QTimer *timer;
-    TypSygnalu currentSignalType;
+    TypSygnalu typSygnalu;
 
-    // Wykres
     QChart *chart;
     QChartView *chartView;
     QLineSeries *series;
-    QLineSeries *seriesSetpoint; // Dodana seria dla wartości zadanej
+    QLineSeries *seriesSetpoint;
     QValueAxis *axisX;
+
     QChart *chartPID;
     QChartView *chartViewPID;
     QLineSeries *seriesP;
     QLineSeries *seriesI;
     QLineSeries *seriesD;
-    QLineSeries *seriesError;
     QValueAxis *axisXPID;
     QValueAxis *axisYPID;
+
+    QChart *chartUchyb;
+    QChartView *chartViewUchyb;
+    QLineSeries *seriesUchyb;
+    QValueAxis *axisXUchyb;
+    QValueAxis *axisYUchyb;
 };
 
 

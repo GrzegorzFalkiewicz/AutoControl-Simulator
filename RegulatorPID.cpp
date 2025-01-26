@@ -8,8 +8,8 @@ double RegulatorPID::symuluj(double blad) {
     double wyj_p = k * blad;
 
     double wyj_i = 0.0;
-    const double I_MAX = 50.0;  // Maksymalna wartość całki
-    const double I_MIN = -50; // Minimalna wartość całki
+    const double I_MAX = 20.0;
+    const double I_MIN = -20;
 
     if (ti != 0.0) {
         suma_uchybu += blad;
@@ -39,11 +39,4 @@ double RegulatorPID::symulujRozniczkujacy(double blad) {
     double wyj_d = td * (blad - poprzedniBladaWart);
     poprzedniBladaWart = blad;
     return wyj_d;
-}
-void RegulatorPID::resetujCzlonCalkujacy() {
-    suma_uchybu = 0.0;
-}
-
-void RegulatorPID::resetujCzlonRozniczkujacy() {
-    poprzedniBladaWart = 0.0;
 }

@@ -13,6 +13,4 @@ public:
     double symulujProporcjonalny(double blad);
     double symulujCalkujacy(double blad);
     double symulujRozniczkujacy(double blad);
-    void resetujCzlonCalkujacy();
-    void resetujCzlonRozniczkujacy();
 };

@@ -1,4 +1,5 @@
 #include "Generator.h"
+#include "qmath.h"
 
 Generator::Generator(TypSygnalu typ, double amplituda, double okres, double wypelnienie, int czasAktywacji)
     : typ(typ), amplituda(amplituda), okres(okres), wypelnienie(wypelnienie), czasAktywacji(czasAktywacji) {
