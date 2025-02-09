@@ -15,6 +15,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->signalTypeComboBox->addItem("Sygnał sinusoidalny");
     connect(ui->signalTypeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::on_signalTypeComboBox_currentIndexChanged);
 
+    connect(ui->spinBoxA1, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxA1_valueChanged);
+    connect(ui->spinBoxA2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxA2_valueChanged);
+    connect(ui->spinBoxA3, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxA3_valueChanged);
+    connect(ui->spinBoxB1, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxB1_valueChanged);
+    connect(ui->spinBoxB2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxB2_valueChanged);
+    connect(ui->spinBoxB3, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxB3_valueChanged);
+
+    connect(ui->spinBoxK, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxK_valueChanged);
+    connect(ui->spinBoxTi, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxTi_valueChanged);
+    connect(ui->spinBoxTd, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxTd_valueChanged);
+
+    connect(ui->spinBoxAmplituda, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxAmplituda_valueChanged);
+    connect(ui->spinBoxOkres, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::on_spinBoxOkres_valueChanged);
+
     chart = new QChart();
     series = new QLineSeries();
     series->setName("Wartość regulowana");
@@ -28,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     axisX->setLabelFormat("%d");
     axisX->setTickCount(10);
     axisX->setRange(0, 50);
-    QValueAxis *axisY = new QValueAxis();
+    axisY = new QValueAxis();
     axisY->setTitleText("Wartość sygnału");
     axisY->setLabelFormat("%.2f");
     axisY->setRange(-10, 10);
@@ -113,11 +127,16 @@ void MainWindow::on_startButton_clicked()
     double amplituda = ui->spinBoxAmplituda->value();
     double okres = ui->spinBoxOkres->value();
     double wypelnienie = ui->spinBoxWypelnienie->value();
-    int czasAktywacji = ui->spinBoxCzas->value();
+    int opoznienie = ui->spinBoxCzas->value();
     if (ti == 0.0) {
         ti = 0.1;
     }
-    uklad = new UkladRegulacji(wspA, wspB,1, k, ti, td, typSygnalu, amplituda, okres, wypelnienie, czasAktywacji);
+    uklad = new UkladRegulacji(wspA, wspB,opoznienie, k, ti, td, typSygnalu, amplituda, okres, wypelnienie);
+    ui->startButton->hide();
+}
+
+void MainWindow::on_wznowButton_clicked()
+{
     timer->start(100);
 }
 
@@ -126,25 +145,58 @@ void MainWindow::updateSimulation()
     if (uklad) {
         double wartoscZadana = uklad->getGenerator().generuj(krok);
         double wynik = uklad->symuluj(krok);
-
         double uchyb = wartoscZadana - wynik;
-        double wyjP = uklad->getRegulator().symulujProporcjonalny(uchyb);
-        double wyjI = uklad->getRegulator().symulujCalkujacy(uchyb);
-        double wyjD = uklad->getRegulator().symulujRozniczkujacy(uchyb);
+        double wyjP = uklad->getRegulator().getWyjP();
+        double wyjI = uklad->getRegulator().getWyjI();
+        double wyjD = uklad->getRegulator().getWyjD();
 
         series->append(krok, wynik);
         seriesSetpoint->append(krok, wartoscZadana);
-
         seriesP->append(krok, wyjP);
         seriesI->append(krok, wyjI);
         seriesD->append(krok, wyjD);
-        seriesUchyb->append(krok,uchyb);
+        seriesUchyb->append(krok, uchyb);
 
-        if (krok > axisX->max()) {
-            axisX->setMax(axisX->max() + 10);
-            axisXPID->setMax(axisXPID->max() + 10);
-            axisXUchyb->setMax(axisXUchyb->max() + 10);
-        }
+        int windowSize = 100;
+        int startX = (krok / windowSize) * windowSize;
+        int endX = startX + windowSize;
+
+        axisX->setRange(startX, endX);
+        axisXPID->setRange(startX, endX);
+        axisXUchyb->setRange(startX, endX);
+
+        auto calculateYRange = [](const QLineSeries* series) {
+            int minY = std::numeric_limits<int>::max();
+            int maxY = std::numeric_limits<int>::min();
+            for (const QPointF& point : series->points()) {
+                minY = std::min(minY, static_cast<int>(std::floor(point.y())));
+                maxY = std::max(maxY, static_cast<int>(std::ceil(point.y())));
+            }
+            return std::make_pair(minY, maxY);
+        };
+
+        auto [minY, maxY] = calculateYRange(series);
+        auto [minYSetpoint, maxYSetpoint] = calculateYRange(seriesSetpoint);
+        minY = std::min(minY, minYSetpoint);
+        maxY = std::max(maxY, maxYSetpoint);
+        minY = std::min(minY, 0);
+        maxY = std::max(maxY, 0);
+        axisY->setRange(minY - 1, maxY + 1);
+        axisY->setLabelFormat("%d");
+        auto [minP, maxP] = calculateYRange(seriesP);
+        auto [minI, maxI] = calculateYRange(seriesI);
+        auto [minD, maxD] = calculateYRange(seriesD);
+        int minPID = std::min({minP, minI, minD});
+        int maxPID = std::max({maxP, maxI, maxD});
+        minPID = std::min(minPID, 0);
+        maxPID = std::max(maxPID, 0);
+        axisYPID->setRange(minPID - 1, maxPID + 1);
+        axisYPID->setLabelFormat("%d");
+        auto [minUchyb, maxUchyb] = calculateYRange(seriesUchyb);
+        minUchyb = std::min(minUchyb, 0);
+        maxUchyb = std::max(maxUchyb, 0);
+        axisYUchyb->setRange(minUchyb - 1, maxUchyb + 1);
+        axisYUchyb->setLabelFormat("%d");
         krok++;
     }
 }
@@ -162,6 +214,7 @@ void MainWindow::on_resetButton_clicked()
         series->clear();
         seriesSetpoint->clear();
         axisX->setRange(0, 50);
+        axisY->setRange(-10, 10);
         seriesP->clear();
         seriesI->clear();
         seriesD->clear();
@@ -173,36 +226,103 @@ void MainWindow::on_resetButton_clicked()
     }
     delete uklad;
     uklad = nullptr;
-    ui->spinBoxA1->setValue(0.0);
+    ui->spinBoxA1->setValue(-0.4);
     ui->spinBoxA2->setValue(0.0);
     ui->spinBoxA3->setValue(0.0);
-    ui->spinBoxB1->setValue(0.0);
+    ui->spinBoxB1->setValue(0.6);
     ui->spinBoxB2->setValue(0.0);
     ui->spinBoxB3->setValue(0.0);
     ui->spinBoxK->setValue(0.5);
-    ui->spinBoxTi->setValue(1.0);
+    ui->spinBoxTi->setValue(5.0);
     ui->spinBoxTd->setValue(0.2);
-    ui->spinBoxAmplituda->setValue(1.0);
-    ui->spinBoxOkres->setValue(1.0);
+    ui->spinBoxAmplituda->setValue(5.0);
+    ui->spinBoxOkres->setValue(20.0);
     ui->spinBoxWypelnienie->setValue(0.5);
-    ui->spinBoxCzas->setValue(0);
+    ui->spinBoxCzas->setValue(1);
     ui->signalTypeComboBox->setCurrentIndex(0);
+    ui->startButton->show();
 }
-
 void MainWindow::on_signalTypeComboBox_currentIndexChanged(int index)
 {
     switch (index) {
-    case 0:
-        typSygnalu = TypSygnalu::SkokJednostkowy;
-        break;
-    case 1:
-        typSygnalu = TypSygnalu::Prostokatny;
-        break;
-    case 2:
-        typSygnalu = TypSygnalu::Sinusoidalny;
-        break;
-    default:
-        typSygnalu = TypSygnalu::SkokJednostkowy;
-        break;
+    case 0: typSygnalu = TypSygnalu::SkokJednostkowy; break;
+    case 1: typSygnalu = TypSygnalu::Prostokatny; break;
+    case 2: typSygnalu = TypSygnalu::Sinusoidalny; break;
+    default: typSygnalu = TypSygnalu::SkokJednostkowy; break;
+    }
+    if (uklad) {
+        uklad->getGenerator().setTypSygnalu(typSygnalu);
+    }
+}
+void MainWindow::on_spinBoxA1_valueChanged(double value) {
+    if (uklad) {
+        auto wspA = uklad->getModel().getWspA();
+        wspA[0] = value;
+        uklad->getModel().setWspA(wspA);
+    }
+}
+void MainWindow::on_spinBoxA2_valueChanged(double value) {
+    if (uklad) {
+        auto wspA = uklad->getModel().getWspA();
+        wspA[1] = value;
+        uklad->getModel().setWspA(wspA);
+    }
+}
+void MainWindow::on_spinBoxA3_valueChanged(double value) {
+    if (uklad) {
+        auto wspA = uklad->getModel().getWspA();
+        wspA[2] = value;
+        uklad->getModel().setWspA(wspA);
+    }
+}
+void MainWindow::on_spinBoxB1_valueChanged(double value) {
+    if (uklad) {
+        auto wspB = uklad->getModel().getWspB();
+        wspB[0] = value;
+        uklad->getModel().setWspB(wspB);
+    }
+}
+void MainWindow::on_spinBoxB2_valueChanged(double value) {
+    if (uklad) {
+        auto wspB = uklad->getModel().getWspB();
+        wspB[1] = value;
+        uklad->getModel().setWspB(wspB);
+    }
+}
+void MainWindow::on_spinBoxB3_valueChanged(double value) {
+    if (uklad) {
+        auto wspB = uklad->getModel().getWspB();
+        wspB[2] = value;
+        uklad->getModel().setWspB(wspB);
+    }
+}
+void MainWindow::on_spinBoxK_valueChanged(double value) {
+    if (uklad) {
+        uklad->getRegulator().setK(value);
+    }
+}
+void MainWindow::on_spinBoxTi_valueChanged(double value) {
+    if (uklad) {
+        uklad->getRegulator().setTi(value);
+    }
+}
+void MainWindow::on_spinBoxTd_valueChanged(double value) {
+    if (uklad) {
+        uklad->getRegulator().setTd(value);
+    }
+}
+void MainWindow::on_spinBoxAmplituda_valueChanged(double value) {
+    if (uklad) {
+        uklad->getGenerator().setAmplituda(value);
+    }
+}
+void MainWindow::on_spinBoxOkres_valueChanged(double value) {
+    if (uklad) {
+        uklad->getGenerator().setOkres(value);
+    }
+}
+void MainWindow::on_spinBoxWypelnienie_valueChanged(double value) {
+    if (uklad) {
+        uklad->getGenerator().setWypelnienie(value);
     }
 }

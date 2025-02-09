@@ -1,13 +1,13 @@
 #include "SprzezenieZwrotne.h"
 
 SprzezenieZwrotne::SprzezenieZwrotne(ModelARX* model, RegulatorPID* regulator, Generator* generator)
-    : model(model), regulator(regulator), generator(generator) {
+    : model(model), regulator(regulator), generator(generator), poprzedniaWartosc(0.0) {
 }
-
 double SprzezenieZwrotne::symuluj(int krok) {
     double wartoscZadana = generator->generuj(krok);
-    double wartoscModelu = model->symuluj(0);
-    double uchyb = wartoscZadana - wartoscModelu;
+    double uchyb = wartoscZadana - poprzedniaWartosc;
     double sterowanie = regulator->symuluj(uchyb);
-    return model->symuluj(sterowanie);
+    double aktualnaWartosc = model->symuluj(sterowanie);
+    poprzedniaWartosc = aktualnaWartosc;
+    return aktualnaWartosc;
 }

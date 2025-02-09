@@ -33,6 +33,7 @@ public:
     QGridLayout *gridLayout_5;
     QHBoxLayout *horizontalLayout;
     QPushButton *startButton;
+    QPushButton *wznowButton;
     QPushButton *stopButton;
     QPushButton *resetButton;
     QVBoxLayout *verticalLayoutUchyb;
@@ -97,6 +98,12 @@ public:
 
         horizontalLayout->addWidget(startButton);
 
+        wznowButton = new QPushButton(centralwidget);
+        wznowButton->setObjectName("wznowButton");
+        wznowButton->setMinimumSize(QSize(0, 100));
+
+        horizontalLayout->addWidget(wznowButton);
+
         stopButton = new QPushButton(centralwidget);
         stopButton->setObjectName("stopButton");
         stopButton->setMinimumSize(QSize(0, 100));
@@ -124,7 +131,8 @@ public:
         spinBoxAmplituda = new QDoubleSpinBox(centralwidget);
         spinBoxAmplituda->setObjectName("spinBoxAmplituda");
         spinBoxAmplituda->setMinimumSize(QSize(134, 23));
-        spinBoxAmplituda->setMaximum(10.000000000000000);
+        spinBoxAmplituda->setDecimals(2);
+        spinBoxAmplituda->setMaximum(100.000000000000000);
         spinBoxAmplituda->setSingleStep(0.100000000000000);
         spinBoxAmplituda->setValue(1.000000000000000);
 
@@ -133,10 +141,10 @@ public:
         spinBoxOkres = new QDoubleSpinBox(centralwidget);
         spinBoxOkres->setObjectName("spinBoxOkres");
         spinBoxOkres->setMinimumSize(QSize(135, 23));
-        spinBoxOkres->setMinimum(0.100000000000000);
+        spinBoxOkres->setMinimum(0.000000000000000);
         spinBoxOkres->setMaximum(100.000000000000000);
         spinBoxOkres->setSingleStep(0.100000000000000);
-        spinBoxOkres->setValue(1.000000000000000);
+        spinBoxOkres->setValue(10.000000000000000);
 
         gridLayout_3->addWidget(spinBoxOkres, 1, 1, 1, 1);
 
@@ -206,7 +214,7 @@ public:
         spinBoxTi->setMinimum(-100.000000000000000);
         spinBoxTi->setMaximum(100.000000000000000);
         spinBoxTi->setSingleStep(0.100000000000000);
-        spinBoxTi->setValue(1.000000000000000);
+        spinBoxTi->setValue(5.000000000000000);
 
         gridLayout_2->addWidget(spinBoxTi, 1, 2, 1, 1);
 
@@ -216,6 +224,7 @@ public:
         spinBoxK->setMinimum(-100.000000000000000);
         spinBoxK->setMaximum(100.000000000000000);
         spinBoxK->setSingleStep(0.100000000000000);
+        spinBoxK->setValue(0.500000000000000);
 
         gridLayout_2->addWidget(spinBoxK, 1, 1, 1, 1);
 
@@ -225,6 +234,7 @@ public:
         spinBoxTd->setMinimum(-100.000000000000000);
         spinBoxTd->setMaximum(100.000000000000000);
         spinBoxTd->setSingleStep(0.100000000000000);
+        spinBoxTd->setValue(0.200000000000000);
 
         gridLayout_2->addWidget(spinBoxTd, 1, 3, 1, 1);
 
@@ -282,6 +292,7 @@ public:
         spinBoxCzas = new QSpinBox(centralwidget);
         spinBoxCzas->setObjectName("spinBoxCzas");
         spinBoxCzas->setMaximum(100);
+        spinBoxCzas->setValue(1);
 
         gridLayout_4->addWidget(spinBoxCzas, 1, 0, 1, 1, Qt::AlignmentFlag::AlignVCenter);
 
@@ -305,6 +316,7 @@ public:
         spinBoxA1->setMinimum(-100.000000000000000);
         spinBoxA1->setMaximum(100.000000000000000);
         spinBoxA1->setSingleStep(0.100000000000000);
+        spinBoxA1->setValue(-0.400000000000000);
 
         gridLayout_4->addWidget(spinBoxA1, 1, 1, 1, 1);
 
@@ -337,6 +349,7 @@ public:
         spinBoxB1->setMinimum(-100.000000000000000);
         spinBoxB1->setMaximum(100.000000000000000);
         spinBoxB1->setSingleStep(0.100000000000000);
+        spinBoxB1->setValue(0.600000000000000);
 
         gridLayout_4->addWidget(spinBoxB1, 3, 1, 1, 1);
 
@@ -390,7 +403,8 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "UAR - PROJEKT", nullptr));
-        startButton->setText(QCoreApplication::translate("MainWindow", "START", nullptr));
+        startButton->setText(QCoreApplication::translate("MainWindow", "ZADAJ ", nullptr));
+        wznowButton->setText(QCoreApplication::translate("MainWindow", "START", nullptr));
         stopButton->setText(QCoreApplication::translate("MainWindow", "STOP", nullptr));
         resetButton->setText(QCoreApplication::translate("MainWindow", "RESET", nullptr));
         label_8->setText(QCoreApplication::translate("MainWindow", "AMPLITUDA", nullptr));
